@@ -140,11 +140,12 @@ ppc_stat(df$D, y_rep_D, stat = "sd")
 samples <- rstan::extract(fit, pars=c("alpha1", "alpha2", "b", "m", "k"))
 samples_U <- rstan::extract(fit, pars=c("U"))
 
+#### Calcula 4000 muestras de 1 única observación en la que lo único que cambia es B1
+
 # B1 = 0
 M_B1_0 <- with(samples, alpha1 + b * 0 + k * 0)
 D_B1_0 <- with(samples, alpha2 + b * 0 + k * 0 + m*M_B1_0)
 
-#### Calcula 4000 muestras de 1 única observación en la que lo único que cambia es B1
 # B1 = 1
 M_B1_1 <- with(samples, alpha1 + b * 1 + k * 0)
 D_B1_1 <- with(samples, alpha2 + b * 0 + k * 0 + m*M_B1_1)
