@@ -14,7 +14,7 @@ k <- 1
 p <- 0.5
 
 set.seed(1908)
-N <- 10000 # number of pairs
+N <- 200 # number of pairs
 U <- rnorm(N) # simulate confounds
 # birth order and family sizes
 B1 <- rbinom(N, size=1, prob=p) # 50% first borns
@@ -25,9 +25,12 @@ D  <- rnorm( N, b*B2 + k*U + m*M ) # change the 0 to turn on causal influence of
 df <- tibble(M = M, D = D, B1 = B1, B2 = B2, U = U)
 df
 
+cor(df)
+
 summary(lm(D ~ M, data = df))
 summary(lm(D ~ M + B1 + B2, data = df))
-
+summary(lm(D ~ M + B2, data = df))
+summary(lm(D ~ B1 + B2, data = df))
 
 
 library(rstan)
@@ -87,6 +90,7 @@ generated quantities {
 
 # Compilar el modelo desde el string
 stan_model_compiled <- stan_model(model_code = stan_model_string)
+saveRDS(stan_model_compiled, "stan_model_compiled.rds")
 
 data_list <- list(
   N = nrow(df),
@@ -249,5 +253,4 @@ probe_ates %>%
   ggplot(aes(x = value, fill = type)) +
   geom_density(alpha = 0.5) +
   labs(title = "ATEs") +
-  theme_minimal() + 
-  xlim(-0.02, 0.02)
+  theme_minimal() 
