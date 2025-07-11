@@ -1,0 +1,43 @@
+---
+title: "Estructuras causales"
+output: html_document
+date: "2025-07-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("utils_causal_structures.R", encoding = "UTF-8")
+```
+
+```{r}
+res <- make_datasets()
+
+datasets <- list(
+  "M" = res[[1]]$df,
+  "F" = res[[2]]$df,
+  "C" = res[[3]]$df,
+  "T" = res[[4]]$df
+)
+```
+
+```{r}
+for (name in names(datasets)) {
+  cat("## Dataset", name, "\n")
+  print(datasets[[name]])
+  cat("\n\n")
+}
+```
+
+```{r}
+for (name in names(datasets)) {
+  cat("## Dataset", name, "\n")
+  print(datasets[[name]] %>% cor())
+  cat("\n\n")
+}
+```
+
+¿Cual es el efecto causal de $X1$ y $X2$ sobre $Y$?
+
